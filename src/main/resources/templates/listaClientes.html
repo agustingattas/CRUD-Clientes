@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="template :: head">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <header  th:replace="template :: header"></header>
+        <div class="container">
+            <h1 th:text="${titulo}"></h1>
+        </div>
+        <div class="container">
+            <a class="btn btn-primary btn-sm" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/cliente/registrar}" th:text="'Nuevo Cliente'" title="Crear Nuevo Registro">
+                
+            </a>
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombres</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Ciudad</th>
+                        <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Modificar</th>
+                        <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cl:${clientes}">
+                        <th scope="row" th:text="${cl.id}"></th>
+                        <td th:text="${cl.nombres}"></td>
+                        <td th:text="${cl.apellidos}"></td>
+                        <td th:text="${cl.telefono}"></td>
+                        <td th:text="${cl.email}"></td>
+                        <td th:text="${cl.ciudad.ciudad}"></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-success btn-sm" th:href="@{/cliente/edit/} + ${cl.id}" th:text="'Modificar'" title="Editar Registro"></a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger btn-sm" th:href="@{/cliente/eliminar/} + ${cl.id}" th:text="'Eliminar'" title="Eliminar Registro" onclick="return confirm('Esta seguro de eliminar el registro?')"></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer  th:replace="template :: footer">      
+        </footer>
+    </body>
+</html>
